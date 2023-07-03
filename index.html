@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="locomotive.css">
+    <style>
+        .container{
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+        .section{
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .circle-start{
+            width: 100px;
+            height: 100px;
+            background-color: brown;
+            position: absolute;
+            bottom: 100px;
+            left: 500px;
+            z-index: 100;
+            border-radius: 100%;
+            transition: 1s;
+        }
+
+        .circle-right{
+            width: 100px;
+            height: 100px;
+            background-color: brown;
+            position: absolute;
+            bottom: 100px;
+            left:90vw;
+            right: 10px;
+            z-index: 100;
+            border-radius: 100%;
+            transition: 1s;
+        }
+
+        .circle-left{
+            width: 100px;
+            height: 100px;
+            background-color: brown;
+            position: absolute;
+            bottom: 100px;
+            right:90vw;
+            left: 10px;
+            z-index: 100;
+            border-radius: 100%;
+            transition: 1s;
+        }
+
+
+        
+
+    </style>
+</head>
+<body>
+    <main data-scroll-container class="">
+        <div class="container">
+            <div class="circle-start" id="circle"></div>
+        </div>
+        
+
+        <section  data-scroll-section class="section" style="background-color: rgb(40, 40, 40);"></section>
+
+
+
+        <section  data-scroll-section class="section" style="background-color: rgb(74, 74, 74);"></section>
+
+
+        <section  data-scroll-section class="section" style="background-color: rgb(94, 94, 94);"></section>
+
+
+
+        <section  data-scroll-section class="section" style="background-color: rgb(155, 155, 155);"></section>
+
+
+        <section  data-scroll-section class="section" style="background-color: rgb(215, 215, 215);"></section>
+
+    </main>
+    
+
+
+
+<script src="locomotive.js"></script>
+
+<script>
+    const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true,
+        direction:"horizontal"
+    });
+
+    const circle = document.getElementById("circle");
+
+    let positionActual = "start";
+
+    scroll.on("scroll",(e)=>{
+
+        console.clear();
+        console.log("limite x: " + e.limit.x);
+        console.log("posicion x: " + e.scroll.x);
+
+        let positionX = e.scroll.x;
+        let limitX = e.limit.x;
+
+        const start = positionX <= 200;
+        const toRight = positionX > 200;
+        const toLeft = positionX > (limitX -200);
+
+
+        if(positionActual === "start"){
+            
+
+            if(start){
+
+                circle.classList.add("circle-start");
+                circle.classList.remove("circle-right");
+                circle.classList.remove("circle-left");
+                
+            }else if(toRight){
+
+                if(toLeft){
+                    positionActual = "end";
+
+                    circle.classList.remove("circle-start");
+                    circle.classList.remove("circle-right");
+                    circle.classList.add("circle-left");
+
+                }else{
+                    circle.classList.remove("circle-start");
+                    circle.classList.add("circle-right");
+                    circle.classList.remove("circle-left");
+                }
+
+                
+            }
+
+
+        }else if(positionActual === "end"){
+
+            if(start){
+
+                    positionActual = "start";
+
+                    circle.classList.add("circle-start");
+                    circle.classList.remove("circle-right");
+                    circle.classList.remove("circle-left");
+            }
+
+        }
+    })
+
+
+
+</script>
+</body>
+</html>
